@@ -142,7 +142,8 @@ NDTScanMatcher::NDTScanMatcher()
     "converged_param_nearest_voxel_transformation_likelihood",
     converged_param_nearest_voxel_transformation_likelihood_);
 
-  critical_upperbound_exe_time_ = this->declare_parameter("critical_upperbound_exe_time",critical_upperbound_exe_time_);
+  critical_upperbound_exe_time_ =
+    this->declare_parameter("critical_upperbound_exe_time", critical_upperbound_exe_time_);
 
   initial_pose_timeout_sec_ =
     this->declare_parameter("initial_pose_timeout_sec", initial_pose_timeout_sec_);
@@ -284,7 +285,9 @@ void NDTScanMatcher::timer_diagnostic()
       diag_status_msg.level = diagnostic_msgs::msg::DiagnosticStatus::ERROR;
       diag_status_msg.message += "skipping_publish_num exceed limit. ";
     }
-    if (state_ptr_->count("exe_time") && std::stod((*state_ptr_)["exe_time"]) >= critical_upperbound_exe_time_) {
+    if (
+      state_ptr_->count("exe_time") &&
+      std::stod((*state_ptr_)["exe_time"]) >= critical_upperbound_exe_time_) {
       diag_status_msg.level = diagnostic_msgs::msg::DiagnosticStatus::WARN;
       diag_status_msg.message += "NDT exe time is too long. ";
     }
