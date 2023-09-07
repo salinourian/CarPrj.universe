@@ -100,7 +100,7 @@ NDTScanMatcher::NDTScanMatcher()
   estimate_scores_for_degrounded_scan_(
     declare_parameter("estimate_scores_for_degrounded_scan", false)),
   z_margin_for_ground_removal_(declare_parameter("z_margin_for_ground_removal", 0.8)),
-  critical_upperbound_exe_time_(24)
+  critical_upper_bound_exe_time_ms_(24)
 {
   (*state_ptr_)["state"] = "Initializing";
   is_activated_ = false;
@@ -142,8 +142,8 @@ NDTScanMatcher::NDTScanMatcher()
     "converged_param_nearest_voxel_transformation_likelihood",
     converged_param_nearest_voxel_transformation_likelihood_);
 
-  critical_upperbound_exe_time_ =
-    this->declare_parameter("critical_upperbound_exe_time", critical_upperbound_exe_time_);
+  critical_upper_bound_exe_time_ms_ =
+    this->declare_parameter("critical_upper_bound_exe_time_ms", critical_upper_bound_exe_time_ms_);
 
   initial_pose_timeout_sec_ =
     this->declare_parameter("initial_pose_timeout_sec", initial_pose_timeout_sec_);
@@ -287,7 +287,7 @@ void NDTScanMatcher::timer_diagnostic()
     }
     if (
       state_ptr_->count("exe_time") &&
-      std::stod((*state_ptr_)["exe_time"]) >= critical_upperbound_exe_time_) {
+      std::stod((*state_ptr_)["exe_time"]) >= critical_upper_bound_exe_time_ms_) {
       diag_status_msg.level = diagnostic_msgs::msg::DiagnosticStatus::WARN;
       diag_status_msg.message += "NDT exe time is too long. ";
     }
