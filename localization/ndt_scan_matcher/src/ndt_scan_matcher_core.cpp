@@ -90,7 +90,6 @@ NDTScanMatcher::NDTScanMatcher()
   converged_param_type_(ConvergedParamType::TRANSFORM_PROBABILITY),
   converged_param_transform_probability_(4.5),
   converged_param_nearest_voxel_transformation_likelihood_(2.3),
-  critical_upperbound_exe_time_(24),
   initial_estimate_particles_num_(100),
   initial_pose_timeout_sec_(1.0),
   initial_pose_distance_tolerance_m_(10.0),
@@ -145,8 +144,6 @@ NDTScanMatcher::NDTScanMatcher()
 
   critical_upper_bound_exe_time_ms_ =
     this->declare_parameter("critical_upper_bound_exe_time_ms", critical_upper_bound_exe_time_ms_);
-
-  critical_upperbound_exe_time_ = this->declare_parameter("critical_upperbound_exe_time",critical_upperbound_exe_time_);
 
   initial_pose_timeout_sec_ =
     this->declare_parameter("initial_pose_timeout_sec", initial_pose_timeout_sec_);
@@ -292,7 +289,7 @@ void NDTScanMatcher::timer_diagnostic()
       state_ptr_->count("execution_time") &&
       std::stod((*state_ptr_)["execution_time"]) >= critical_upper_bound_exe_time_ms_) {
       diag_status_msg.level = diagnostic_msgs::msg::DiagnosticStatus::WARN;
-      diag_status_msg.message += "NDT exe time is too long. ";
+      diag_status_msg.message += "NDT exe time is too long. (took " + (*state_ptr_)["execution_time"] + " [ms])";
     }
     // Ignore local optimal solution
     if (
